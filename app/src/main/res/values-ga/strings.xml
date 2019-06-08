@@ -40,4 +40,7 @@
 	<string name="Slovak">Slóvaicis</string>
 	<string name="Portuguese">Portaingéilis</string>
 
+    <string name="languageString">Teanga</string>
+    <string name="privacyString">Privacy policy</string>
+
 </resources>

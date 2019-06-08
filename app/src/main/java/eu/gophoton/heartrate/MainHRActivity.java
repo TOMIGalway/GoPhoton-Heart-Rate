@@ -2,6 +2,8 @@ package eu.gophoton.heartrate;
 import java.util.Locale;
 
 import eu.gophoton.heartrate.R;
+
+import android.app.Dialog;
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -15,17 +17,16 @@ import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
 public class MainHRActivity extends FragmentActivity {
 
-	//private TextView string_id;
-	
-	
-ViewPager Tab;
+	ViewPager Tab;
     TabPagerAdapter TabAdapter;
-  ActionBar actionBar;
-    
+  	ActionBar actionBar;
+	Dialog privacyDialog;
   
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +70,7 @@ ViewPager Tab;
       actionBar.addTab(actionBar.newTab().setIcon(R.drawable.gp_menu3_50).setTabListener(tabListener));
       actionBar.addTab(actionBar.newTab().setIcon(R.drawable.gp_menu4_50).setTabListener(tabListener));    
     }
-    
-    
-    
-    //Added 25/8/14 - Add a menu bar for the language settings. The menu is created from language_menu.xml
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -81,12 +79,32 @@ ViewPager Tab;
 		return true;
 	}
 
-	
-	//Following Bucky's tutorial #52 on 10/9/14
+	public void ShowPrivacyDialog()
+	{
+		privacyDialog = new Dialog(this);
+		privacyDialog.setContentView(R.layout.privacy_policy_popup);
+
+		privacyDialog.setTitle("Privacy policy");
+
+		Button btnClose = (Button) privacyDialog.findViewById(R.id.privacyDialogCloseBtn);
+		btnClose.setOnClickListener(new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											privacyDialog.dismiss();
+										}
+									}
+		);
+
+		privacyDialog.show();
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
 		switch(item.getItemId()){
+			case R.id.privacy:
+				ShowPrivacyDialog();
+				break;
 			case R.id.english:
 				changeLocale("en");
 				break;
@@ -120,31 +138,19 @@ ViewPager Tab;
 		}
 		return false;
 	}
-       
-	
-	//Got this code from http://stackoverflow.com/questions/21086374/changing-android-application-language
+
 	private void changeLocale (String localeCode){
-		
-		Locale locale = null;
-		//Log.e("Paul's tag","1. changeLocale method. Language = " + localeCode);	     
-    	
-		//Part of load locale method
-		//String langPref = "Language";  //Declare the variable
-    	//SharedPreferences prefs = getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
-    	//String language = prefs.getString(langPref, "");     
-		
-	    
-	    if (localeCode.equalsIgnoreCase(""))
-	    	return;
-	    
-    	locale = new Locale(localeCode);
-		//Log.e("Paul's tag","1. changeLocale method. Language = " + locale);	
+
+	    if (localeCode.equalsIgnoreCase("")) {
+			return;
+		}
+
+		Locale locale = new Locale(localeCode);
     	saveLocale(localeCode);
     	Locale.setDefault(locale);
     	android.content.res.Configuration config = new android.content.res.Configuration();
     	config.locale = locale;
     	getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-    	//Log.e("Paul's tag","4. SetLocale method.");
     	
         Resources res = getResources(); 
         DisplayMetrics dm = res.getDisplayMetrics(); 
@@ -153,23 +159,15 @@ ViewPager Tab;
         res.updateConfiguration(conf, dm); 
         Intent refresh = new Intent(this, MainHRActivity.class); 
         startActivity(refresh);
-    	
-    	
-
 	}
 	
     public void saveLocale(String lang)
     {
-		//Log.e("Paul's tag","2. saveLocale method");
     	String langPref = "Language";
     	SharedPreferences prefs = getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
     	SharedPreferences.Editor editor = prefs.edit();
 		editor.putString(langPref, lang);
 		editor.commit();
-		//Log.e("Paul's tag","3. saveLocale method. End function");
     }
-    
 
-
-	
 }

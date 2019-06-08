@@ -40,4 +40,7 @@
 	<string name="Slovak">Slovak</string>
 	<string name="Portuguese">Portuguese</string>
 
+    <string name="languageString">Language</string>
+    <string name="privacyString">Privacy policy</string>
+
 </resources>

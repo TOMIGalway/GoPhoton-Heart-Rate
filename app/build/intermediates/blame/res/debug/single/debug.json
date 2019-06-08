@@ -68,6 +68,10 @@
         "source": "C:\\Development\\GoPhoton-Heart-Rate\\app\\src\\main\\res\\drawable-hdpi\\gp_logo_300.png"
     },
     {
+        "merged": "C:\\Development\\GoPhoton-Heart-Rate\\app\\build\\intermediates\\res\\merged\\debug\\layout_privacy_policy_popup.xml.flat",
+        "source": "C:\\Development\\GoPhoton-Heart-Rate\\app\\src\\main\\res\\layout\\privacy_policy_popup.xml"
+    },
+    {
         "merged": "C:\\Development\\GoPhoton-Heart-Rate\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_gp_eu.png.flat",
         "source": "C:\\Development\\GoPhoton-Heart-Rate\\app\\src\\main\\res\\drawable-hdpi\\gp_eu.png"
     },
