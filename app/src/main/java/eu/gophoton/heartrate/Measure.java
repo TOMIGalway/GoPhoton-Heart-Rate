@@ -14,8 +14,11 @@ import com.androidplot.xy.XYSeries;
 //import com.androidplot.xy.XYStepMode;
 
 import eu.gophoton.heartrate.R;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
@@ -23,6 +26,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,6 +65,8 @@ private static boolean hasProcessed = false;
 static boolean useRed = true;	// Set to true to use Red, set to false to use Green 
 static boolean dataExcelExport = false;	// Set to true to enable email of data
 
+	private int CameraPermissionRequestCode = 1;
+
 @SuppressWarnings("deprecation")
 @Override
 public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,17 +86,24 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		@Override
 		public void onClick(View v){
 
-			if (trigger==false)
-			{
-				trigger=true;
-				startProcessing();
-				start_stop_button.setText(R.string.btn_stop_text); //Rename the text on button
+			if (ActivityCompat.checkSelfPermission(getContext(),
+					Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+				if (trigger==false)
+				{
+					trigger=true;
+					startProcessing();
+					start_stop_button.setText(R.string.btn_stop_text); //Rename the text on button
+				}
+				else
+				{
+					trigger=false;
+					stopProcessing();
+					start_stop_button.setText(R.string.btn_start_text); //Rename the text on button
+				}
 			}
 			else
 			{
-				trigger=false;  
-				stopProcessing();
-				start_stop_button.setText(R.string.btn_start_text); //Rename the text on button
+				requestPermissions(new String[]{Manifest.permission.CAMERA}, CameraPermissionRequestCode);
 			}
 		} //End onClick(View v)	          					  
 	});
